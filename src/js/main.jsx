@@ -16,11 +16,11 @@ Style.inject();
 window.addEventListener('load', () => {
   page('/', function () {    
     let board = `
+      F T T . H
+      T . T . H
+      T T 3 T H
       . . . T .
-      . . T . .
-      F T T T H
-      . . . T .
-      H T T T .
+      H T T T H
     `.replace(/\ /g, '')
       .split('\n')
       .map((s) => {

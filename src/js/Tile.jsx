@@ -4,15 +4,15 @@ import Style from './Style';
 let STYLE = Style.registerStyle({
   display: 'flex',
   fontWeight: 'bold',
-  backgroundColor: 'white',
-  color: '#aaa',
+  backgroundColor: '#89ffa7',
+  color: 'rgba(0,0,0,0.2)',
   flexGrow: 1,
   width: '100%',
   textAlign: 'center',
   alignContent: 'center',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '5vmin',
+  fontSize: '7vmin',
   cursor: 'pointer',
   opacity: 0.8,
   '&:hover': {
@@ -21,7 +21,7 @@ let STYLE = Style.registerStyle({
 });
 
 let TREE = Style.registerStyle(STYLE.style, {
-  backgroundColor: '#89ffa7',
+  backgroundColor: '#51DB73',
   color: '#9e750e',
 });
 
