@@ -22,18 +22,27 @@ let ROW = Style.registerStyle({
 });
 
 let Board = React.createClass({
-  render: function () {
-    let rows = this.props.board.map((row, rowNum) => {
-      console.log("row", row);
+  getDefaultProps: function () {
+    return {
+      onClickTile: function () {
+        console.log('onClickTile default handler invoked');
+      }
+    };
+  },
 
-      let tiles = row.map((type, i) => {
+  render: function () {
+    let rows = this.props.board.map((row, y) => {
+      let tiles = row.map((type, x) => {
+        console.log('onClickTile', this.props.onClickTile);
         return (
-          <Tile key={i} type={type} />
+          <Tile key={x} type={type} onClick={() => {
+            this.props.onClickTile(x, y);
+          }} />
         );
       });
 
       return (
-        <div key={rowNum} className={ROW.className}>
+        <div key={y} className={ROW.className}>
           {tiles}
         </div>
       );

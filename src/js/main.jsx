@@ -16,11 +16,11 @@ Style.inject();
 window.addEventListener('load', () => {
   page('/', function () {    
     let board = `
-      F T T . H
-      T . T . H
-      T T 3 T H
-      . . . T .
-      H T T T H
+      F T T T H 
+      . . T . H 
+      T T T T H 
+      T . T . . 
+      H H T T F 
     `.replace(/\ /g, '')
       .split('\n')
       .map((s) => {
@@ -34,7 +34,7 @@ window.addEventListener('load', () => {
     
     React.render(
       <App>
-        <Puzzle board={board} />
+        <Puzzle board={Immutable.fromJS(board)} />
       </App>
     , document.getElementById('main'));
   });
