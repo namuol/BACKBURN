@@ -42,53 +42,53 @@ function right (board, x, y) {
   return get(row, x+1);
 }
 
-function fireIsNear (board, x, y, dir) {
-  if (dir) {
-    switch (dir) {
-      case 'north':
-        return below(board, x, y) === 'F';
-      case 'south':
-        return above(board, x, y) === 'F';
-      case 'east':
-        return left(board, x, y) === 'F';
-      case 'west':
-        return right(board, x, y) === 'F';
-    }
-    return;
-  }
-
+function isNear (board, x, y, type) {
   return (
-    above(board,x,y) === 'F' ||
-    below(board,x,y) === 'F' ||
-    left(board,x,y) === 'F' ||
-    right(board,x,y) === 'F'
+    type.indexOf(above(board,x,y)) >= 0 ||
+    type.indexOf(below(board,x,y)) >= 0 ||
+    type.indexOf(left(board,x,y)) >= 0 ||
+    type.indexOf(right(board,x,y)) >= 0
   );
 }
 
 export default function (board) {
   return board.map((row, y) => {
     return row.map((tile, x) => {
+
+      if (isNear(board,x,y, '1')) {
+        if (tile === 'B') {
+          return '1';
+        } else {
+          return 'X';
+        }
+      }
+
       switch (tile) {
         case 'T':
         case 'H':
-          if (fireIsNear(board, x, y)) {
+          if (isNear(board, x, y, 'F')) {
             return 'F';
           }
           break;
-        case '9':
-        case '8':
-        case '7':
-        case '6':
-        case '5':
-        case '4':
-        case '3':
+        case 't':
+          if (isNear(board, x, y, 'F') || isNear(board, x, y, 'f')) {
+            return 'f';
+          }
+          break;
+        case 'B':
+          if (isNear(board, x, y, 'F') || isNear(board, x, y, 'f')) {
+            return '1';
+          }
+          break;
         case '3':
         case '2':
-          if (fireIsNear(board, x, y)) {
-            return 'F';
+          if (isNear(board, x, y, 'F') || isNear(board, x, y, 'f')) {
+            return '1';
           }
           return '' + (parseInt(tile) - 1);
+
         case 'F':
+        case 'f':
         case '1':
           return 'X';
       }

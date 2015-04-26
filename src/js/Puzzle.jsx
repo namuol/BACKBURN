@@ -6,7 +6,10 @@ import Board from './Board';
 import step from './step';
 
 import Immutable from 'immutable';
-window.Immutable = Immutable;
+
+import encodeBoard from './encodeBoard';
+
+import page from 'page';
 
 let STYLE = Style.registerStyle({
   display: 'flex',
@@ -32,6 +35,14 @@ let BUTTONS = Style.registerStyle({
   padding: '2vmin',
 });
 
+let TILE_BUTTON = Style.registerStyle({
+  display: 'flex',
+  width: '16vmin',
+  height: '16vmin',
+  padding: 'auto',
+  marginRight: '2vmin',
+});
+
 let Puzzle = React.createClass({
   getInitialState: function () {
     return {
@@ -40,22 +51,46 @@ let Puzzle = React.createClass({
   },
 
   onClickTile: function (x, y) {
-    let b = step(this.state.board);
+    let b = this.state.board;
+
+    let newTile = 'B';
+    let tile = b.get(y).get(x);
+    
+    if (tile === newTile) {
+      newTile = this.props.board.get(y).get(x);
+    }
+
     this.setState({
-      board: b.set(y, b.get(y).set(x, b.get(y).get(x) !== 'F' ? '1' : 'F'))
+      board: b.set(y, b.get(y).set(x, newTile))
     });
   },
   
   onStep: function () {
+    let newBoard = step(this.state.board);
+
     this.setState({
-      board: step(this.state.board),
+      board: newBoard,
     });
+
+    let boardString = encodeBoard(newBoard);
+
+    if (boardString.indexOf('F') < 0 && boardString.indexOf('1') < 0) {
+      clearInterval(this._stepInterval);
+    }
+  },
+
+  onPlay: function () {
+    this._stepInterval = setInterval(this.onStep, 500);
   },
   
   onRestart: function () {
     this.setState({
       board: this.props.board,
     });
+  },
+
+  onEdit: function () {
+    page.redirect('/' + encodeBoard(this.props.board) + '/edit');
   },
 
   render: function () {
@@ -70,6 +105,7 @@ let Puzzle = React.createClass({
         <div className={BUTTONS.className}>
           <button onClick={this.onStep}>STEP</button>
           <button onClick={this.onRestart}>RESTART</button>
+          <button onClick={this.onEdit}>EDIT</button>
         </div>
       </div>
     );

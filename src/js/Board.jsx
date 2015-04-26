@@ -35,9 +35,16 @@ let Board = React.createClass({
       let tiles = row.map((type, x) => {
         console.log('onClickTile', this.props.onClickTile);
         return (
-          <Tile key={x} type={type} onClick={() => {
-            this.props.onClickTile(x, y);
-          }} />
+          <Tile
+            key={x}
+            type={type}
+            onMouseEnter={() => {
+              this.props.onEnterTile(x, y);
+            }}
+            onMouseDown={() => {
+              this.props.onClickTile(x, y);
+            }}
+          />
         );
       });
 
@@ -49,7 +56,9 @@ let Board = React.createClass({
     });
 
     return (
-      <div className={STYLE.className}>
+      <div className={STYLE.className} style={{
+        fontSize: `${50/this.props.board.size}vmin`,
+      }}>
         {rows}
       </div>
     );
